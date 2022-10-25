@@ -1,4 +1,7 @@
 #Estimating fundamental matrix
+import numpy as np
+from scipy import linalg
+
 
 class EstimateFundamentalMatrix:
     def __init__(self, points):
@@ -12,17 +15,21 @@ class EstimateFundamentalMatrix:
 
 
 
-        n = x1.shape[1]
-        if x2.shape[1] != n:
-            raise ValueError("Number of points don't match.")
         
         # build matrix for equations
-        A = zeros((9,9))
+        A = np.zeros((9,9))
         i = 0
-        for keys in range(len(points)):
+        for keys in points:
+            print("key ",keys)
+            print("points ", points[keys])
             refpoints = points[keys]
-            A[i] = [[keys[0]*refpoints[0], keys[0]*refpoints[1], keys[0],
-                    keys[1]*refpoints[0], keys[1]*refpoints[1], keys[1], refpoints[0], refpoints[1], 1 ]]
+
+            print("key x ",keys[0])
+            print("points x ", refpoints[0])
+
+            print("key x ",keys[1])
+            print("points x ", refpoints[1])
+            A[i] = [keys[0]*refpoints[0], keys[0]*refpoints[1], keys[0], keys[1]*refpoints[0], keys[1]*refpoints[1], keys[1], refpoints[0], refpoints[1], 1 ]
             i = i + 1
 
 
@@ -35,7 +42,7 @@ class EstimateFundamentalMatrix:
         # make rank 2 by zeroing out last singular value
         U,S,V = linalg.svd(F)
         S[2] = 0
-        F = dot(U,dot(diag(S),V))
+        F = np.dot(U,np.dot(np.diag(S),V))
         F = F/F[2,2]
         print("_____F_____")
         print(F)

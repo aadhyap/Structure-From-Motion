@@ -1,6 +1,7 @@
 #choose 8 correspondances between two images (1 and another image)
 import numpy as np
 import cv2 as cv2
+from EstimateFundamentalMatrix import EstimateFundamentalMatrix
 
 
 #read matching 1 txt file
@@ -26,8 +27,8 @@ with open('./P3Data/matching1.txt') as f:
             g = data[2]
             b = data[3]
            
-            imgx = data[4]
-            imgy = data[5]
+            imgx = float(data[4])
+            imgy = float(data[5])
 
             rgb = tuple([r, g, b, imgx, imgy])
 
@@ -39,8 +40,8 @@ with open('./P3Data/matching1.txt') as f:
             total = j = 6
             while j  < total + lenpoints  + 1:
                 ID = data[j]
-                img_u = data[j + 1]
-                img_v = data[j + 2]
+                img_u = float(data[j + 1])
+                img_v = float(data[j + 2])
                 j = j + 3
                 points_data[ID] = [img_u, img_v]
 
