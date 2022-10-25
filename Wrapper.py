@@ -52,18 +52,19 @@ with open('./P3Data/matching1.txt') as f:
 #Now choose 8 correspondances
 #img1 needs 8 and its corresponding image, (lets say 2)
 
-eight_points_data = []
+eight_points_data = {}
+
 for keys in matching_1:
     if "2" in matching_1[keys]:
         print(matching_1[keys]["2"])
-        currentimg = [keys[3], keys[4]]
-        eight_points_data.append([currentimg, matching_1[keys]["2"]])
+        currentimg = tuple([keys[3], keys[4]])
+        eight_points_data[currentimg] = matching_1[keys]["2"]
     if(len(eight_points_data) >= 8):
         break
 
 print("eight points ", eight_points_data)
 
-
+FundamentalMatrix = EstimateFundamentalMatrix(eight_points_data)
 
 
 
