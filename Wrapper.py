@@ -10,7 +10,7 @@ import cv2 as cv2
 with open('./P3Data/matching1.txt') as f:
 
     lines = f.readlines()
-    lengthLines = 3
+    lengthLines = len(lines)
     matching_1 = {}
     for i in range(lengthLines):
         if( i != 0):
@@ -33,7 +33,7 @@ with open('./P3Data/matching1.txt') as f:
 
 
 
-            print("RGB ", rgb)
+
             #data of other points start after data[5]
 
             total = j = 6
@@ -42,10 +42,7 @@ with open('./P3Data/matching1.txt') as f:
                 img_u = data[j + 1]
                 img_v = data[j + 2]
                 j = j + 3
-                print("j ", j)
-                print(" total ", total + lenpoints)
                 points_data[ID] = [img_u, img_v]
-                print("points data", points_data)
 
 
             matching_1[rgb] = points_data
@@ -54,8 +51,19 @@ with open('./P3Data/matching1.txt') as f:
 
 #Now choose 8 correspondances
 #img1 needs 8 and its corresponding image, (lets say 2)
+
+eight_points_data = []
 for keys in matching_1:
-    
+    if "2" in matching_1[keys]:
+        print(matching_1[keys]["2"])
+        currentimg = [keys[3], keys[4]]
+        eight_points_data.append([currentimg, matching_1[keys]["2"]])
+    if(len(eight_points_data) >= 8):
+        break
+
+print("eight points ", eight_points_data)
+
+
 
 
 
