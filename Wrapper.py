@@ -37,10 +37,12 @@ with open('./P3Data/matching1.txt') as f:
 
 
             #data of other points start after data[5]
-
+            twos = 0
             total = j = 6
             while j  < total + lenpoints  + 1:
                 ID = data[j]
+                if(ID == "2"):
+                    twos = twos + 1
                 img_u = float(data[j + 1])
                 img_v = float(data[j + 2])
                 j = j + 3
@@ -51,23 +53,16 @@ with open('./P3Data/matching1.txt') as f:
 
     print(matching_1)
 
+img1 = cv2.imread("./P3Data/1.png")
+
 #Now choose 8 correspondances
 #img1 needs 8 and its corresponding image, (lets say 2)
 
-eight_points_data = {}
 
-for keys in matching_1:
-    if "2" in matching_1[keys]:
-        print(matching_1[keys]["2"])
-        currentimg = tuple([keys[3], keys[4]])
-        eight_points_data[currentimg] = matching_1[keys]["2"]
-    if(len(eight_points_data) >= 8):
-        break
 
-print("eight points ", eight_points_data)
-
-FundamentalMatrix = EstimateFundamentalMatrix(eight_points_data)
-InliersRANSAC = GetInlierRANSAC()
+#FundamentalMatrix = EstimateFundamentalMatrix(matching_1)
+InliersRANSAC = GetInlierRANSAC(matching_1, "2")
+print("twos ", twos)
 
 
 

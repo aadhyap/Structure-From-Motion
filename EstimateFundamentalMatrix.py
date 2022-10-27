@@ -5,7 +5,11 @@ from scipy import linalg
 
 class EstimateFundamentalMatrix:
     def __init__(self, points):
+
+        print("len of of eight points ", points)
         # build matrix for equations
+
+       
         A = np.zeros((8,9))
         i = 0
         for keys in points:
@@ -21,7 +25,6 @@ class EstimateFundamentalMatrix:
             A[i] = [keys[0]*refpoints[0], keys[0]*refpoints[1], keys[0], keys[1]*refpoints[0], keys[1]*refpoints[1], keys[1], refpoints[0], refpoints[1], 1 ]
             i = i + 1
 
-
                 
         # compute linear least square solution
         U,S,V = linalg.svd(A)
@@ -36,9 +39,16 @@ class EstimateFundamentalMatrix:
         print("_____F_____")
         print(F)
 
-        
-        return F/F[2,2]
+   
+        self.matrix = F
 
+
+    def getMatrix(self):
+
+        
+        return self.matrix
+
+    
             
 
 
