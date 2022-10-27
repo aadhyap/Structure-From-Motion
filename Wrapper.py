@@ -2,6 +2,7 @@
 import numpy as np
 import cv2 as cv2
 from EstimateFundamentalMatrix import EstimateFundamentalMatrix
+from GetInlierRANSAC import GetInlierRANSAC
 
 
 #read matching 1 txt file
@@ -66,6 +67,7 @@ for keys in matching_1:
 print("eight points ", eight_points_data)
 
 FundamentalMatrix = EstimateFundamentalMatrix(eight_points_data)
+InliersRANSAC = GetInlierRANSAC()
 
 
 

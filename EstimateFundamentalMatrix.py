@@ -5,19 +5,8 @@ from scipy import linalg
 
 class EstimateFundamentalMatrix:
     def __init__(self, points):
-
-
-
-
-
-
-
-
-
-
-        
         # build matrix for equations
-        A = np.zeros((9,9))
+        A = np.zeros((8,9))
         i = 0
         for keys in points:
             print("key ",keys)
