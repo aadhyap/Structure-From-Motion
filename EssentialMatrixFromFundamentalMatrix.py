@@ -4,6 +4,7 @@ from scipy import linalg
 from EstimateFundamentalMatrix import EstimateFundamentalMatrix
 from random import sample
 import math
+from scipy.stats import skew
 
 class EssentialMatrixFromFundamentalMatrix:
     def __init__(self, F):
@@ -27,16 +28,28 @@ class EssentialMatrixFromFundamentalMatrix:
     #def getMatrix():
 
     def getEssential(self):
-        transposeK = self.K.transpose()
-        print("transpose K ", transposeK)
+        E = np.dot(self.K.T, np.dot(self.F, self.K))
+        '''
 
-        print("Fundamental ", self.F)
-        test = np.multiply(transposeK, self.F)
-        print("test ", test)
-        E = np.multiply(np.multiply(transposeK, self.F), self.K)
-
-        print("E ", E)
+        U,S,V = linalg.svd(E)
+        if linalg.det(np.dot(U,V))<0:
+            V = -V
+        E = np.dot(U,np.dot(np.diag([1,1,0]),V))    
+        
+        # create matrices (Hartley p 258)
+        Z = skew([0,0,-1])
+        W = np.array([[0,-1,0],[1,0,0],[0,0,1]])
+        
+        # return all four solutions
+       
+        P2 = [np.vstack((np.dot(U,np.dot(W,V)).T,U[:,2])).T,
+                 np.vstack((np.dot(U,np.dot(W,V)).T,-U[:,2])).T,
+                np.vstack((np.dot(U,np.dot(W.T,V)).T,U[:,2])).T,
+                np.vstack((np.dot(U,np.dot(W.T,V)).T,-U[:,2])).T]
+        '''
         return E
+
+
 
 
 

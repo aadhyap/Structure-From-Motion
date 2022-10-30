@@ -13,15 +13,7 @@ class EstimateFundamentalMatrix:
         A = np.zeros((len(points),9))
         i = 0
         for keys in points:
-            #print("key ",keys)
-            #print("points ", points[keys])
             refpoints = points[keys]
-
-            #print("key x ",keys[0])
-            #print("points x ", refpoints[0])
-
-            #print("key x ",keys[1])
-            #print("points x ", refpoints[1])
             A[i] = [keys[0]*refpoints[0], keys[0]*refpoints[1], keys[0], keys[1]*refpoints[0], keys[1]*refpoints[1], keys[1], refpoints[0], refpoints[1], 1 ]
             i = i + 1
        
