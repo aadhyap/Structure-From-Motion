@@ -4,6 +4,7 @@ import cv2 as cv2
 from EstimateFundamentalMatrix import EstimateFundamentalMatrix
 from GetInlierRANSAC import GetInlierRANSAC
 from EssentialMatrixFromFundamentalMatrix import EssentialMatrixFromFundamentalMatrix
+from ExtractCameraPose import ExtractCameraPose
 
 
 #read matching 1 txt file
@@ -66,6 +67,10 @@ F = GetInlierRANSAC(matching_1, "2")
 print("Final F ", F.getF())
 Essential = EssentialMatrixFromFundamentalMatrix(F.getF())
 print("Essential Matrix ", Essential.getEssential())
+
+#Get camera poses
+CameraPoses = ExtractCameraPose(Essential.getEssential())
+print("Camera Poses ", CameraPoses.getCameraPoses())
 
 
 
