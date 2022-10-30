@@ -3,6 +3,7 @@ import numpy as np
 import cv2 as cv2
 from EstimateFundamentalMatrix import EstimateFundamentalMatrix
 from GetInlierRANSAC import GetInlierRANSAC
+from EssentialMatrixFromFundamentalMatrix import EssentialMatrixFromFundamentalMatrix
 
 
 #read matching 1 txt file
@@ -61,9 +62,10 @@ img1 = cv2.imread("./P3Data/1.png")
 
 
 #FundamentalMatrix = EstimateFundamentalMatrix(matching_1)
-InliersRANSAC = GetInlierRANSAC(matching_1, "2")
-print("twos ", twos)
-
+F = GetInlierRANSAC(matching_1, "2")
+print("Final F ", F.getF())
+Essential = EssentialMatrixFromFundamentalMatrix(F.getF())
+print("Essential Matrix ", Essential.getEssential())
 
 
 

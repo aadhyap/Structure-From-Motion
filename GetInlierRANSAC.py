@@ -33,8 +33,7 @@ class GetInlierRANSAC:
                 z = 1
                 image1 = np.array([x, y, z])
 
-                print("F ", F)
-                print("image 2 ", image2)
+              
                 res1 = np.dot(image2, F)
                 res = np.dot(res1, image1)
 
@@ -47,12 +46,14 @@ class GetInlierRANSAC:
                     print("res that made it ", res)
             
             if (len(S) > len(n[0])):
-                bestres = res
+                bestres = F
                 n[0] = S
 
         print("FINAL ", S)
         print("Lenght ", len(S))
         print("RES Final ", bestres)
+
+        self.bestF = bestres
 
 
 
@@ -90,8 +91,10 @@ class GetInlierRANSAC:
         self.RANSAC(eight_points_data, imgpoints)
 
 
-    def imageMatches(self):
-        image1Toimage2 = []
+    def getF(self):
+        return self.bestF
+
+
         
 #how to recompute Fundamental?
 

@@ -6,9 +6,10 @@ from random import sample
 import math
 
 class EssentialMatrixFromFundamentalMatrix:
-    def __init__(self):
+    def __init__(self, F):
         #getting the K matrix
         self.K = []
+        self.F = F
         with open('./P3Data/calibration.txt') as f:
             lines = f.readlines()
             lengthLines = len(lines)
@@ -19,14 +20,28 @@ class EssentialMatrixFromFundamentalMatrix:
             self.K = np.array(self.K).astype(float)
             print("K in an array ", self.K)
 
-               
+        self.getEssential()
 
-
+    
     #E = K^(T) * F * K
     #def getMatrix():
 
+    def getEssential(self):
+        transposeK = self.K.transpose()
+        print("transpose K ", transposeK)
 
-Test = EssentialMatrixFromFundamentalMatrix()
+        print("Fundamental ", self.F)
+        test = np.multiply(transposeK, self.F)
+        print("test ", test)
+        E = np.multiply(np.multiply(transposeK, self.F), self.K)
+
+        print("E ", E)
+        return E
+
+
+
+
+
 
 
 
