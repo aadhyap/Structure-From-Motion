@@ -5,6 +5,7 @@ import math
 class LinearTriangulation:
     def __init__(self, K, camerapose1, camerapose2, matchings, imgID):
         imgpoints = {}
+        world_points = []
         '''
         A = [[x (cross) P] [x2 cross P]]
         AX = 0
@@ -35,9 +36,15 @@ class LinearTriangulation:
             x_1 = keys
             x_2 = imgpoints[keys]
 
-        
-
+            #Ax = 0
             A = np.array([[np.multiply(np.skew(x_1),P1)], [np.multiply(np.skew(imgpoints[x_2]),P2)]])
+            U, S, V = np.linalg.svd(A)
+            X = V.T
+            world_point = X[:,-1]
+
+            world_points.append(world_point)
+
+        return world_points 
 
 
 
