@@ -31,10 +31,15 @@ class LinearTriangulation:
 
 
         for keys in imgpoints:
-            x = keys[0]
-            y = keys[1]
 
-            x_2, y_2 = imgpoints[keys][0], imgpoints[keys][1]
+            x_1 = keys
+            x_2 = imgpoints[keys]
+
+        
+
+            A = np.array([[np.multiply(np.skew(x_1),P1)], [np.multiply(np.skew(imgpoints[x_2]),P2)]])
+
+
 
 
 
