@@ -44,7 +44,13 @@ class LinearTriangulation:
 
             world_points.append(world_point)
 
-        return world_points 
+        self.world_points = world_points
+
+
+    def getWorldPoints(self):
+        return self.world_points
+
+
 
 
 
