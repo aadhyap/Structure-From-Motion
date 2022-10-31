@@ -31,23 +31,13 @@ class EssentialMatrixFromFundamentalMatrix:
         E = np.dot(self.K.T, np.dot(self.F, self.K))
         '''
 
-        U,S,V = linalg.svd(E)
-        if linalg.det(np.dot(U,V))<0:
-            V = -V
-        E = np.dot(U,np.dot(np.diag([1,1,0]),V))    
-        
-        # create matrices (Hartley p 258)
-        Z = skew([0,0,-1])
-        W = np.array([[0,-1,0],[1,0,0],[0,0,1]])
-        
-        # return all four solutions
        
-        P2 = [np.vstack((np.dot(U,np.dot(W,V)).T,U[:,2])).T,
-                 np.vstack((np.dot(U,np.dot(W,V)).T,-U[:,2])).T,
-                np.vstack((np.dot(U,np.dot(W.T,V)).T,U[:,2])).T,
-                np.vstack((np.dot(U,np.dot(W.T,V)).T,-U[:,2])).T]
         '''
         return E
+
+    def getK(self):
+
+        return K
 
 
 

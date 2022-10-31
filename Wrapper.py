@@ -5,6 +5,7 @@ from EstimateFundamentalMatrix import EstimateFundamentalMatrix
 from GetInlierRANSAC import GetInlierRANSAC
 from EssentialMatrixFromFundamentalMatrix import EssentialMatrixFromFundamentalMatrix
 from ExtractCameraPose import ExtractCameraPose
+from LinearTriangulation import LinearTriangulation
 
 
 #read matching 1 txt file
@@ -66,11 +67,17 @@ img1 = cv2.imread("./P3Data/1.png")
 F = GetInlierRANSAC(matching_1, "2")
 print("Final F ", F.getF())
 Essential = EssentialMatrixFromFundamentalMatrix(F.getF())
+K = Essential.getK() # instrinsic parameters
 print("Essential Matrix ", Essential.getEssential())
 
 #Get camera poses
 CameraPoses = ExtractCameraPose(Essential.getEssential())
 print("Camera Poses ", CameraPoses.getCameraPoses())
+
+worldpoints = LinearTriangulation(K, camerapose1, camerapose2, matching_1, imgID)
+
+
+
 
 
 
