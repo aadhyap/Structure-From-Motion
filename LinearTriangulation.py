@@ -13,6 +13,14 @@ class LinearTriangulation:
         #Testing each of the matchings and getting an X world points out of them 
 
         I = array([[1,0,0],[0,1,0],[0,0,1]])
+        C1 = camerapose1[0]
+        R1 = camerapose1[1]
+
+        C2 = camerapose2[0]
+        R2 = camerapose2[1]
+
+        P1 = np.dot(K, np.dot(R1, np.hstack((I, -C1))))
+        P2 = np.dot(K, np.dot(R2, np.hstack((I, -C2))))
     
 
         for keys in matchings:
