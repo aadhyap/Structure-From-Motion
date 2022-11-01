@@ -7,25 +7,35 @@ from scipy.stats import skew
 
 class DisambiguateCameraPose:
 
-    def __init__(self, allworldpts):
+    def __init__(self, CameraPoses, allworldpts):
 
 
         self.maxpts = 0
         self.maxCamerapose = None
-        for camerapose in allworldpts:
 
-            C = camerapose[0].reshape(-1,1) 
-            R = camerapose[1].reshape(-1,1) 
+        j = 0 
+        for i in allworldpts:
+            camerapose = CameraPoses[j]
+            j = j + 1
+
+
+            C = np.array(camerapose[0])
+            R = np.array(camerapose[1])
             R = R[2, :].reshape(1,-1)
 
-            worldpts = allworldpts[camerapose]
+            worldpts =  np.asarray(allworldpts[i])
             worldpts = worldpts[:, 0:3]
 
+
             numpts = self.numberOfPoints(C, R, worldpts)
+            print("number of points ", numpts)
 
             if(numpts > self.maxpts):
+
                 self.maxpts = numpts
                 self.maxCamerapose = camerapose
+
+        print(" MAX number of points ", self.maxpts)
 
     
 
@@ -34,8 +44,9 @@ class DisambiguateCameraPose:
         numberpts = 0
 
         for worldpt in worldpts:
+            print("World Pt ", worldpt)
             if R.dot(worldpt-C)>0 and worldpt[2]>0:
-                numberpts = numberpts + 1:
+                numberpts = numberpts + 1
 
         return numberpts
 
