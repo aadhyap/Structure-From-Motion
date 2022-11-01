@@ -19,12 +19,15 @@ class DisambiguateCameraPose:
             R = R[2, :].reshape(1,-1)
 
             worldpts = allworldpts[camerapose]
+            worldpts = worldpts[:, 0:3]
 
-            numpts = self.numberOfPoints(worldpts)
+            numpts = self.numberOfPoints(C, R, worldpts)
 
             if(numpts > self.maxpts):
                 self.maxpts = numpts
                 self.maxCamerapose = camerapose
+
+        return self.maxCamerapose
 
 
 
