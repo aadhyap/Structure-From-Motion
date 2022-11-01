@@ -27,10 +27,7 @@ class DisambiguateCameraPose:
                 self.maxpts = numpts
                 self.maxCamerapose = camerapose
 
-        return self.maxCamerapose
-
-
-
+    
 
     def numberOfPoints(self, C, R, worldpts):
 
@@ -41,6 +38,10 @@ class DisambiguateCameraPose:
                 numberpts = numberpts + 1:
 
         return numberpts
+
+    def getbestCP(self):
+
+        return self.maxCamerapose
 
 
 

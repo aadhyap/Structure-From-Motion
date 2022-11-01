@@ -6,6 +6,7 @@ from GetInlierRANSAC import GetInlierRANSAC
 from EssentialMatrixFromFundamentalMatrix import EssentialMatrixFromFundamentalMatrix
 from ExtractCameraPose import ExtractCameraPose
 from LinearTriangulation import LinearTriangulation
+from DisambiguateCameraPose import DisambiguateCameraPose
 
 
 #read matching 1 txt file
@@ -81,6 +82,7 @@ for i in range(len(CameraPoses)):
     worldpoints = w.getWorldPoints()
     allworldpts[CameraPoses[i]] = worldpoints
 
+bestCameraPose = DisambiguateCameraPose(allworldpts)
 
 
 print("All World Points ")
