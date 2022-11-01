@@ -75,9 +75,14 @@ CameraPoses = ExtractCameraPose(Essential.getEssential()).getCameraPoses()
 print("Camera Poses ", CameraPoses)
 
 
+allworldpts = {}
+for i in range(len(CameraPoses)):
+    w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
+    worldpoints = w.getWorldPoints()
+    allworldpts[CameraPoses[i]] = worldpoints
 
-w= LinearTriangulation(K, CameraPoses[0], CameraPoses[1], matching_1, "2")
-worldpoints = w.getWorldPoints()
+
+
 print("All World Points ")
 #print(worldpoints)
 
