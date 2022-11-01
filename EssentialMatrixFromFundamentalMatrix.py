@@ -20,7 +20,6 @@ class EssentialMatrixFromFundamentalMatrix:
                 self.K.append(data)
             self.K = np.array(self.K).astype(float)
             print("K in an array ", self.K)
-
         self.getEssential()
 
     
@@ -31,13 +30,13 @@ class EssentialMatrixFromFundamentalMatrix:
         E = np.dot(self.K.T, np.dot(self.F, self.K))
         '''
 
-       
         '''
+
         return E
 
     def getK(self):
 
-        return K
+        return self.K
 
 
 
