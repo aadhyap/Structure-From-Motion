@@ -78,13 +78,14 @@ print("Camera Poses ", CameraPoses)
 
 allworldpts = []
 for i in range(len(CameraPoses)):
+    print("new Camera pose", CameraPoses[i])
     w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
     worldpoints = w.getWorldPoints()
 
     allworldpts.append(worldpoints)
 
 
-removeCameraPose = DisambiguateCameraPose(CameraPoses, allworldpts)
+removeCameraPose = DisambiguateCameraPose(K, CameraPoses, allworldpts)
 bestCP, allpts = removeCameraPose.getbestCP()
 
 print("best CP ", bestCP)

@@ -2,12 +2,13 @@ import numpy as np
 from scipy import linalg
 import math
 from scipy.stats import skew
+import pry
 
 
 
 class DisambiguateCameraPose:
 
-    def __init__(self, CameraPoses, allworldpts):
+    def __init__(self, K, CameraPoses, allworldpts):
 
 
         self.maxpts = 0
@@ -27,10 +28,14 @@ class DisambiguateCameraPose:
             C1 = np.zeros((3,1))
             R1 = np.identity(3)
 
-            C = np.array(pose[0])
-            C = np.reshape(C2, (3, 1))
+            C_ = np.array(pose[0])
+            C = np.reshape(C_, (3, 1))
+        
+            #C = C.reshape(-1,1) 
+            print("C ", C)
             R = np.array(pose[1])
-            R = R[2, :].reshape(1,-1)
+            r = R[2, :].reshape(1,-1)
+       
             I = np.array([[1,0,0],[0,1,0],[0,0,1]])
      
 
@@ -38,15 +43,16 @@ class DisambiguateCameraPose:
             P2 = np.dot(K, np.dot(R, np.hstack((I, -C))))
 
 
-            worldpts =  np.asarray(allworldpts[i])
+            worldpts =  allworldpts[i]
+           
             #worldpts = worldpts[:, 0:3]
 
-            allpts = self.numberOfPoints(C, R, worldpts)
-            print("number of points ", numpts)
+            allpts = self.numberOfPoints(C_, worldpts, r)
+            print("number of points ", len(allpts))
 
             if(len(allpts) > self.maxpts):
 
-                self.maxpts = len(numpts)
+                self.maxpts = len(allpts)
                 self.maxCamerapose = pose
                 self.allpts = allpts
 
@@ -57,16 +63,25 @@ class DisambiguateCameraPose:
 
 
 
-    def numberOfPoints(self, C, R, worldpts):
+    def numberOfPoints(self, C, worldpts, r):
         allpts = {}
 
         for pt in worldpts:
 
-            world_pt = worldpts[pt]
-            world_pt = worldpt[0:3]
 
-            print("World Pt ", world_pt)
-            if R.dot(world_pt-C)>0 and world_pt[2]>0:
+            world_pt = worldpts[pt]
+
+            world_pt = world_pt / world_pt[3].reshape(-1,1)
+            world_pt = world_pt[0][0:3]
+
+        
+
+            value = np.dot(r, (world_pt-C))
+            value = value[0]
+       
+
+  
+            if value>0 and world_pt[2]>0:
                 allpts[pt] = world_pt
 
         return allpts 

@@ -42,10 +42,6 @@ class LinearTriangulation:
             x_1 = np.array(keys)
             x_2 = np.array(imgpoints[keys])
 
-            print("x_1 ", x_1)
-            print("x_2 ", x_2)
-            print("P_1 ", P1)
-            print("P_2 ", P2)
 
             #Ax = 0
             #A = np.array([np.dot(skew(x_1),P1), np.dot(skew(x_2),P2)])
@@ -56,15 +52,14 @@ class LinearTriangulation:
             A[3:,:4] = P2
             A[:3,4] = -x_1
             A[3:,5] = -x_2
-            print("A ")
-            print(A)
+            
            
             U, S, V = np.linalg.svd(A)
             X = V[-1,:4]
             world_point = X / X[3]
             world_point = world_point.T
-            world_points[tuple(x_1, x_2)] = world_point #Add image points for image 1 and image 2 and world point into dictionary 
-            print("World Point ", world_point)
+            world_points[tuple([tuple(x_1), tuple(x_2)])] = world_point #Add image points for image 1 and image 2 and world point into dictionary 
+  
 
         self.world_points = world_points
 
