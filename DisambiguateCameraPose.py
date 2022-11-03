@@ -41,13 +41,14 @@ class DisambiguateCameraPose:
             worldpts =  np.asarray(allworldpts[i])
             #worldpts = worldpts[:, 0:3]
 
-            numpts = self.numberOfPoints(C, R, worldpts)
+            allpts = self.numberOfPoints(C, R, worldpts)
             print("number of points ", numpts)
 
-            if(numpts > self.maxpts):
+            if(len(allpts) > self.maxpts):
 
-                self.maxpts = numpts
-                self.maxCamerapose = camerapose
+                self.maxpts = len(numpts)
+                self.maxCamerapose = pose
+                self.allpts = allpts
 
             print(" MAX number of points ", self.maxpts)
 
@@ -56,27 +57,23 @@ class DisambiguateCameraPose:
 
 
 
-
-
-
     def numberOfPoints(self, C, R, worldpts):
-
-        numberpts = 0
+        allpts = {}
 
         for pt in worldpts:
 
             world_pt = worldpts[pt]
             world_pt = worldpt[0:3]
 
-            print("World Pt ", worldpt)
-            if R.dot(worldpt-C)>0 and worldpt[2]>0:
-                numberpts = numberpts + 1
+            print("World Pt ", world_pt)
+            if R.dot(world_pt-C)>0 and world_pt[2]>0:
+                allpts[pt] = world_pt
 
-        return numberpts
+        return allpts 
 
     def getbestCP(self):
 
-        return self.maxCamerapose
+        return self.maxCamerapose, self.allpts
 
 
 
