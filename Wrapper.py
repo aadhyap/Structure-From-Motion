@@ -95,7 +95,9 @@ print("best CP ", bestCP)
 print("All World Points ", len(allpts))
 #print(worldpoints)
 
-nonlinear = NonlinearTriangulation(CameraPoses, allpts)
+nonlinear = NonlinearTriangulation(bestCP, allpts, K)
+optimized_worldX = nonlinear.getWorld_pts()
+print("optimized world points ", optimized_worldX)
 
 
 
