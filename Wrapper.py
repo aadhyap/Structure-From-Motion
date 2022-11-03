@@ -85,7 +85,7 @@ for i in range(len(CameraPoses)):
 
 
 removeCameraPose = DisambiguateCameraPose(CameraPoses, allworldpts)
-bestCP = removeCameraPose.getbestCP()
+bestCP, allpts = removeCameraPose.getbestCP()
 
 print("best CP ", bestCP)
 
