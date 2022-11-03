@@ -39,7 +39,7 @@ class DisambiguateCameraPose:
 
 
             worldpts =  np.asarray(allworldpts[i])
-            worldpts = worldpts[:, 0:3]
+            #worldpts = worldpts[:, 0:3]
 
             numpts = self.numberOfPoints(C, R, worldpts)
             print("number of points ", numpts)
@@ -63,7 +63,11 @@ class DisambiguateCameraPose:
 
         numberpts = 0
 
-        for worldpt in worldpts:
+        for pt in worldpts:
+
+            world_pt = worldpts[pt]
+            world_pt = worldpt[0:3]
+
             print("World Pt ", worldpt)
             if R.dot(worldpt-C)>0 and worldpt[2]>0:
                 numberpts = numberpts + 1
