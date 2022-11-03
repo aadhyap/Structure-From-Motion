@@ -77,9 +77,9 @@ print("Camera Poses ", CameraPoses)
 
 
 
-for i in range(len(CameraPoses)):
-    w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
-    worldpoints = w.getWorldPoints()
+
+w= LinearTriangulation(K, CameraPoses, matching_1, "2")
+worldpoints = w.getWorldPoints()
 
 
 removeCameraPose = DisambiguateCameraPose(CameraPoses, worldpoints)
