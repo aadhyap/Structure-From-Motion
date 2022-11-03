@@ -9,6 +9,9 @@ from LinearTriangulation import LinearTriangulation
 from DisambiguateCameraPose import DisambiguateCameraPose
 
 
+from NonlinearTriangulation import NonlinearTriangulation
+
+
 #read matching 1 txt file
 
 
@@ -89,11 +92,10 @@ removeCameraPose = DisambiguateCameraPose(K, CameraPoses, allworldpts)
 bestCP, allpts = removeCameraPose.getbestCP()
 
 print("best CP ", bestCP)
-
-
-print("All World Points ")
+print("All World Points ", len(allpts))
 #print(worldpoints)
 
+nonlinear = NonlinearTriangulation(CameraPoses, allpts)
 
 
 

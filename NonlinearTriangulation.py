@@ -35,7 +35,8 @@ class NonlinearTriangulation:
             geometric_error = optimize.least_squares(fun=GeometricError, x0=X, method="trf", args=[P1, P2, x1, x2])
             optimized_X.append(optimized_params.x)
             # x3D_.append(X1[:3])
-        return np.array(optimized_X)
+        self.optimizedWorldpts = np.array(optimized_X)
+
 
 
 
@@ -61,6 +62,9 @@ class NonlinearTriangulation:
 
         return error.squeeze()
 
+
+    def getWorld_pts(self):
+        return self.optimizedWorldpts
 
 
 
