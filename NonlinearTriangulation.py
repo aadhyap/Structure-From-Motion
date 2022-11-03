@@ -28,11 +28,12 @@ class NonlinearTriangulation:
 
         optimized_X = []
         #is it only the world points that made it in this projection
+        print("length of world ", len(allworldpts))
         for pts in allworldpts:
             x1 = pts[0]
             x2 = pts[1]
             X = allworldpts[pts]
-            print("length of world ", len(X))
+            
             geometric_error = optimize.least_squares(fun=self.GeometricError, x0=X, method="trf", args=[P1, P2, x1, x2])
             optimized_X.append(geometric_error.x)
             # x3D_.append(X1[:3])
