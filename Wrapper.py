@@ -76,14 +76,13 @@ CameraPoses = ExtractCameraPose(Essential.getEssential()).getCameraPoses()
 print("Camera Poses ", CameraPoses)
 
 
-allworldpts = {}
+
 for i in range(len(CameraPoses)):
     w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
     worldpoints = w.getWorldPoints()
 
-    allworldpts[str(i)] = worldpoints
 
-removeCameraPose = DisambiguateCameraPose(CameraPoses, allworldpts)
+removeCameraPose = DisambiguateCameraPose(CameraPoses, worldpoints)
 bestCP = removeCameraPose.getbestCP()
 
 print("best CP ", bestCP)
