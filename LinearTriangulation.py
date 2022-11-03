@@ -8,7 +8,7 @@ class LinearTriangulation:
 
 
         imgpoints = {}
-        world_points = []
+        world_points = {}
         '''
         A = [[x (cross) P] [x2 cross P]]
         AX = 0
@@ -63,7 +63,7 @@ class LinearTriangulation:
             X = V[-1,:4]
             world_point = X / X[3]
             world_point = world_point.T
-            world_points.append(world_point)
+            world_points[tuple(x_1, x_2)] = world_point #Add image points for image 1 and image 2 and world point into dictionary 
             print("World Point ", world_point)
 
         self.world_points = world_points
