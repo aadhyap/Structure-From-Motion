@@ -23,46 +23,45 @@ from NonlinearTriangulation import NonlinearTriangulation
 
 def FindMatchings(filename, id_):
     with open('./P3Data/matching1.txt') as f:
+        lines = f.readlines()
+        lengthLines = len(lines)
+        matching_1 = {}
+        for i in range(lengthLines):
+            if( i != 0):
+                points_data = {}
+                data = lines[i]
+                data = data.split()
+        
 
-    lines = f.readlines()
-    lengthLines = len(lines)
-    matching_1 = {}
-    for i in range(lengthLines):
-        if( i != 0):
-            points_data = {}
-            data = lines[i]
-            data = data.split()
-    
+          
+                print(data)
+                lenpoints = int(data[0])
+                r = data[1]
+                g = data[2]
+                b = data[3]
+               
+                imgx = float(data[4])
+                imgy = float(data[5])
 
-      
-            print(data)
-            lenpoints = int(data[0])
-            r = data[1]
-            g = data[2]
-            b = data[3]
-           
-            imgx = float(data[4])
-            imgy = float(data[5])
-
-            rgb = tuple([r, g, b, imgx, imgy])
-
+                rgb = tuple([r, g, b, imgx, imgy])
 
 
 
-            #data of other points start after data[5]
-            twos = 0
-            total = j = 6
-            while j  < total + lenpoints  + 1:
-                ID = data[j]
-                if(ID == id_):
-                    twos = twos + 1
-                img_u = float(data[j + 1])
-                img_v = float(data[j + 2])
-                j = j + 3
-                points_data[ID] = [img_u, img_v]
+
+                #data of other points start after data[5]
+                twos = 0
+                total = j = 6
+                while j  < total + lenpoints  + 1:
+                    ID = data[j]
+                    if(ID == id_):
+                        twos = twos + 1
+                    img_u = float(data[j + 1])
+                    img_v = float(data[j + 2])
+                    j = j + 3
+                    points_data[ID] = [img_u, img_v]
 
 
-            matching_1[rgb] = points_data
+                matching_1[rgb] = points_data
 
     print(matching_1)
     return matching_1
