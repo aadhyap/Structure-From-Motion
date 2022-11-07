@@ -82,15 +82,12 @@ class LinearPnP:
 
         newimgpts = {}
         for pts in worldpointstoImage:
-            x2 = pts[1]
-            print("image2 points, x2 ", x2)
-
-            
+            x2 = pts[1][0:2]     
             if(x2 in new_matchings):
                 #image2 match with new image pts
                 new_img = new_matchings[x2]
                 worldpt = worldpointstoImage[pts]
-                newimgpts[new_img] = worldpt
+                newimgpts[tuple(new_img)] = worldpt
 
         #returns newimgpts with correct new image points correspondace with world points
         return newimgpts
