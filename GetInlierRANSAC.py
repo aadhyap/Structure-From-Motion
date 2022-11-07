@@ -2,6 +2,7 @@
 import numpy as np
 from scipy import linalg
 from EstimateFundamentalMatrix import EstimateFundamentalMatrix
+import random
 from random import sample
 import math
 
@@ -46,20 +47,11 @@ class GetInlierRANSAC:
 
                 if(res < 0.05):
                     S[keys] = imgpoints[keys]
-                    print("res that made it ", res)
-            print("length of S ", len(S))
             if (len(S) > len(n)):
                 bestres = F
                 n = S.copy()
 
-        print("Lenght ", len(n))
-        print("RES Final ", bestres)
-
-
-        print("FINISHED")
-
-        print("THE FINISHED ")
-        print(n)
+       
 
         #recalculate F = 
         newF = EstimateFundamentalMatrix(n)
@@ -77,24 +69,34 @@ class GetInlierRANSAC:
         imgpoints = {}
         size_matchings = 0
         count = 0
-        
+        randomNum = []
+
         for keys in matchings:
             if imgID in matchings[keys]:
-                size_matchings += 1
+                randomNum.append(size_matchings)
                 currentimg = tuple([keys[3], keys[4]])
                 imgpoints[currentimg] = matchings[keys][imgID]
-           
+            size_matchings += 1
+        print("NUMBER OF SIZE MATCHINGS ", randomNum)
+
                 
 
-        rangenums =  sample(range(0, size_matchings), 8)
+        rangenums =  random.sample(randomNum, 8)
         print("FIRST RANGE NUMS ", len(rangenums)) 
         for nums in rangenums:
+            count = 0
             for keys in matchings:
                 if imgID in matchings[keys]:
+                    print("nums ", nums)
+                    print("count ", count)
                     if(count == nums):
                         currentimg = tuple([keys[3], keys[4]])
                         eight_points_data[currentimg] = matchings[keys][imgID]
-                    count += 1
+                    if(count > nums):
+                        break
+                count += 1
+        print("ALL EIGHT POINTS ", eight_points_data)
+
 
 
         return eight_points_data, imgpoints
