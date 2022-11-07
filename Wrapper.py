@@ -114,7 +114,7 @@ print("optimized world points ", optimized_worldX)
 
 matching_2 = FindMatchings('./P3Data/matching2.txt',"3" )
 
-PnP = LinearPnP(matching_2, imgToX)
+PnP = LinearPnP(matching_2, imgToX, K)
 C, R = PnP.getPose()
 
 print("<=======================Final Camera Pose===========================>")
