@@ -37,11 +37,11 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
                             [-v, u, 0]])
 
 
-            4zero = np.zeros((1, 4))
+            zero4 = np.zeros((1, 4))
             X = newimgpts[pt].reshape((1, 4))
-            Tilde_X = np.vstack((np.hstack((X, 4zero, 4zero)), 
-                            np.hstack((4zero,X, 4zero)), 
-                            np.hstack((4zero, 4zero,X))))
+            Tilde_X = np.vstack((np.hstack((X, zero4, zero4)), 
+                            np.hstack((zero4,X, zero4)), 
+                            np.hstack((zero4, zero4,X))))
 
             A = np.dot(imgCross, Tilde_X)
 
