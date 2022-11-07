@@ -49,10 +49,14 @@ class PnPRANSAC:
                 error = self.GeometricError(P, image, worldpt)
 
                 if(error  < 0.05):
-                    
+                    S[keys] = allimgpts[keys]
+
+            if (len(S) > len(n)):
+                n = S.copy()
 
 
-
+        newPnP = LinearPnP(n, K)
+        C, R, P= newPnP.getPose()
         print("<=======================Final Camera Pose===========================>")
         print(C, R)
 
@@ -70,7 +74,6 @@ class PnPRANSAC:
 
 
             error = np.square((u - np.divide(np.dot(P1.T, X), np.dot(P3.T, X)))) + np.square((v - np.divide(np.dot(P2.T, X), np.dot(P3.T, X)))) 
-
 
             return error.squeeze()
 
