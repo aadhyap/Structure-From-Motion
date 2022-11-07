@@ -16,7 +16,12 @@ from NonlinearTriangulation import NonlinearTriangulation
 
 
 
-with open('./P3Data/matching1.txt') as f:
+
+
+
+
+def FindMatchings(filename, id_):
+    with open('./P3Data/matching1.txt') as f:
 
     lines = f.readlines()
     lengthLines = len(lines)
@@ -48,7 +53,7 @@ with open('./P3Data/matching1.txt') as f:
             total = j = 6
             while j  < total + lenpoints  + 1:
                 ID = data[j]
-                if(ID == "2"):
+                if(ID == id_):
                     twos = twos + 1
                 img_u = float(data[j + 1])
                 img_v = float(data[j + 2])
@@ -59,8 +64,14 @@ with open('./P3Data/matching1.txt') as f:
             matching_1[rgb] = points_data
 
     print(matching_1)
+    return matching_1
 
-img1 = cv2.imread("./P3Data/1.png")
+matching_1 = FindMatchings('./P3Data/matching1.txt',"2" )
+
+
+
+
+
 
 #Now choose 8 correspondances
 #img1 needs 8 and its corresponding image, (lets say 2)
@@ -97,6 +108,9 @@ print("All World Points ", len(allpts))
 
 nonlinear = NonlinearTriangulation(bestCP, allpts, K)
 optimized_worldX, worldpointsToImage= nonlinear.getWorld_pts()
+
+
+
 print("optimized world points ", optimized_worldX)
 
 #Now we have the the best Camera Pose, and Most Optimized Worldpoints
