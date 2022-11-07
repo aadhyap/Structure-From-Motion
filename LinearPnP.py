@@ -71,12 +71,13 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
                 R = -R
                 C = -C
 
+            self.R = R
+            self.C = C
 
-            return R, C
     
 
 
-    def getNewImg_pts(new_matchings, worldpointstoImage):
+    def getNewImg_pts(self,new_matchings, worldpointstoImage):
 
 
         newimgpts = {}
@@ -90,6 +91,10 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
 
         #returns newimgpts with correct new image points correspondace with world points
         return newimgpts
+
+
+    def getPose(self):
+        return C, R
 
 
 
