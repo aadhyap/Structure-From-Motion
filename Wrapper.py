@@ -6,11 +6,13 @@ from GetInlierRANSAC import GetInlierRANSAC
 from EssentialMatrixFromFundamentalMatrix import EssentialMatrixFromFundamentalMatrix
 from ExtractCameraPose import ExtractCameraPose
 from LinearTriangulation import LinearTriangulation
+from NonlinearTriangulation import NonlinearTriangulation
 from DisambiguateCameraPose import DisambiguateCameraPose
 from LinearPnP import LinearPnP
+from PnPRANSAC import PnPRANSAC
 
 
-from NonlinearTriangulation import NonlinearTriangulation
+
 
 
 #read matching 1 txt file
@@ -65,7 +67,6 @@ def FindMatchings(filename, id_):
     matchings = {}
     
     for keys in matching_1:
-
         if id_ in matching_1[keys]:
 
             currentimg = tuple([keys[3], keys[4]])
@@ -73,6 +74,9 @@ def FindMatchings(filename, id_):
 
     
 
+    print("MMMMAAAAAATTTTCCHHHHINNNNGGGSSSSS")
+    print(matchings)
+    print("============================================================")
 
     return matching_1, matchings
 
@@ -124,11 +128,13 @@ print("optimized world points ", optimized_worldX)
 
 _, matching_2 = FindMatchings('./P3Data/matching2.txt',"3" )
 
-PnP = LinearPnP(matching_2, imgToX, K)
-C, R = PnP.getPose()
 
-print("<=======================Final Camera Pose===========================>")
-print(C, R)
+
+pnp_ransac = PnPRANSAC(matching_2, imgToX, K)
+
+
+
+
 
 
 
