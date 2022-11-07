@@ -81,18 +81,20 @@ class GetInlierRANSAC:
         for keys in matchings:
             if imgID in matchings[keys]:
                 size_matchings += 1
+                currentimg = tuple([keys[3], keys[4]])
+                imgpoints[currentimg] = matchings[keys][imgID]
            
                 
 
-        rangenums =  sample(range(0, size_matchings), 8) 
-        for keys in matchings:
-            if imgID in matchings[keys]:
-                count += 1
-                currentimg = tuple([keys[3], keys[4]])
-                imgpoints[currentimg] = matchings[keys][imgID]
-                if(count in rangenums and len(eight_points_data) < 8):
-                    currentimg = tuple([keys[3], keys[4]])
-                    eight_points_data[currentimg] = matchings[keys][imgID]
+        rangenums =  sample(range(0, size_matchings), 8)
+        print("FIRST RANGE NUMS ", len(rangenums)) 
+        for nums in rangenums:
+            for keys in matchings:
+                if imgID in matchings[keys]:
+                    if(count == nums):
+                        currentimg = tuple([keys[3], keys[4]])
+                        eight_points_data[currentimg] = matchings[keys][imgID]
+                    count += 1
 
 
         return eight_points_data, imgpoints
