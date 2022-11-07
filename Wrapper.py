@@ -33,8 +33,7 @@ def FindMatchings(filename, id_):
                 data = data.split()
         
 
-          
-                print(data)
+        
                 lenpoints = int(data[0])
                 r = data[1]
                 g = data[2]
@@ -63,10 +62,18 @@ def FindMatchings(filename, id_):
 
                 matching_1[rgb] = points_data
 
-    print(matching_1)
+    matchings = {}
+    for keys in matching_1:
+        if id_ in matchings[keys]:
+            currentimg = tuple([keys[3], keys[4]])
+            matchings[currentimg] = matching_1[keys][imgID]
+
+    return matchings
+
+
     return matching_1
 
-matching_1 = FindMatchings('./P3Data/matching1.txt',"2" )
+matching_1, matchings= FindMatchings('./P3Data/matching1.txt',"2" )
 
 
 
@@ -112,7 +119,7 @@ optimized_worldX, imgToX= nonlinear.getWorld_pts()
 
 print("optimized world points ", optimized_worldX)
 
-matching_2 = FindMatchings('./P3Data/matching2.txt',"3" )
+_, matching_2 = FindMatchings('./P3Data/matching2.txt',"3" )
 
 PnP = LinearPnP(matching_2, imgToX, K)
 C, R = PnP.getPose()
