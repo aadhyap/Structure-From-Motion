@@ -26,9 +26,15 @@ class PnPRANSAC:
 
         newimgpts = {}
 
+        
+
+        size_matchings = 0
+        count = 0
+        randomNum = []
+
         rangenums =  sample(range(0, self.size_matchings), 6) 
         print("length of list ", len(rangenums))
-        
+
 
         for num in rangenums:
             count = 0
@@ -39,8 +45,12 @@ class PnPRANSAC:
                     new_img = new_matchings[x2]
                     worldpt = worldpointstoImage[pts]
                     newimgpts[tuple(new_img)] = worldpt
+                if count < nums:
+                    break
                 
                 count +=  1
+
+        print("length of new img points ", newimgpts)
 
         #returns newimgpts with correct new image points correspondace with world points
         return newimgpts
