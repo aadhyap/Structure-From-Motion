@@ -50,12 +50,15 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
             P = V.reshape((3, 4)) #P has 4 but we want the first 3 for rotation and the last one is for translation
             p = P[:, :3] #Rotational
 
+            #Get Rotational Matrix
             K_inv = np.linalg.inv(K) #inverse of K
-            r = np.multiply(K_inv, p)
-
+            r = np.dot(K_inv, p)
             U, S, V = np.linalg.svd(r)
+            R = (np.dot(U, V)).T
 
-            R = (np.multiply(U, V)).T
+            #Get Translational
+
+
 
 
 
