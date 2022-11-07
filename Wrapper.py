@@ -65,19 +65,16 @@ def FindMatchings(filename, id_):
     matchings = {}
     
     for keys in matching_1:
-        print("MATCHING ")
-        print(keys)
-        print("=======================================")
-        if id_ in matchings[keys]:
-            
+
+        if id_ in matching_1[keys]:
 
             currentimg = tuple([keys[3], keys[4]])
-            matchings[currentimg] = matching_1[keys][imgID]
+            matchings[currentimg] = matching_1[keys][id_]
 
-    return matchings
+    
 
 
-    return matching_1
+    return matching_1, matchings
 
 matching_1, matchings= FindMatchings('./P3Data/matching1.txt',"2" )
 
