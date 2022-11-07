@@ -30,6 +30,7 @@ class LinearPnP:
 
        newimgpts = self.getNewImg_pts(new_matchings, worldpointstoImage)
 
+       A = None
        for pt in newimgpts:
             u, v = pt
             imgCross = np.array([[0, -1, v],
@@ -43,36 +44,41 @@ class LinearPnP:
                             np.hstack((zero4,X, zero4)), 
                             np.hstack((zero4, zero4,X))))
 
-            A = np.dot(imgCross, Tilde_X)
+            newA = np.dot(imgCross, Tilde_X)
 
-            U, S, V = np.linalg.svd(A)
-            V = V[-1]
-            P = V.reshape((3, 4)) #P has 4 but we want the first 3 for rotation and the last one is for translation
-            p = P[:, :3] #Rotational
+            if A != None:
+                A = np.vstack((A, newA))
+            else:
+                A = newA
 
-            #Get Rotational Matrix
-            K_inv = np.linalg.inv(K) #inverse of K
-            r = np.dot(K_inv, p)
-            U, S, V = np.linalg.svd(r)
-            R = (np.dot(U, V)).T
+        U, S, V = np.linalg.svd(A)
+        V = V[-1]
+        P = V.reshape((3, 4)) #P has 4 but we want the first 3 for rotation and the last one is for translation
+        p = P[:, :3] #Rotational
 
-            t = P[:, 3]
+        #Get Rotational Matrix
+        K_inv = np.linalg.inv(K) #inverse of K
+        r = np.dot(K_inv, p)
+        U, S, V = np.linalg.svd(r)
+        R = (np.dot(U, V)).T
 
-            print("All of P ", P)
-            print("Ps three columns ", p)
-            print("Ps 4th column ", t)
+        t = P[:, 3]
+
+        print("All of P ", P)
+        print("Ps three columns ", p)
+        print("Ps 4th column ", t)
 
 
-            #Get Translational
-            T = np.divide(np.dot(K_inv, t), S)
-            temp = -np.linalg.inv(R)
-            C = np.dot(temp, T)
-            if np.linalg.det(R) < 0:
-                R = -R
-                C = -C
+        #Get Translational
+        T = np.divide(np.dot(K_inv, t), S)
+        temp = -np.linalg.inv(R)
+        C = np.dot(temp, T)
+        if np.linalg.det(R) < 0:
+            R = -R
+            C = -C
 
-            self.R = R
-            self.C = C
+        self.R = R
+        self.C = C
 
     
 
