@@ -83,7 +83,7 @@ allworldpts = []
 for i in range(len(CameraPoses)):
     print("new Camera pose", CameraPoses[i])
     w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
-    worldpoints, worldpointsToImage = w.getWorldPoints()
+    worldpoints = w.getWorldPoints()
 
     allworldpts.append(worldpoints)
 
@@ -96,7 +96,7 @@ print("All World Points ", len(allpts))
 #print(worldpoints)
 
 nonlinear = NonlinearTriangulation(bestCP, allpts, K)
-optimized_worldX = nonlinear.getWorld_pts()
+optimized_worldX, worldpointsToImage= nonlinear.getWorld_pts()
 print("optimized world points ", optimized_worldX)
 
 #Now we have the the best Camera Pose, and Most Optimized Worldpoints
