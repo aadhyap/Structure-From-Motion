@@ -56,6 +56,19 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
             U, S, V = np.linalg.svd(r)
             R = (np.dot(U, V)).T
 
+            t = P[:, 3]
+
+            print("All of P ", P)
+            print("Ps three columns ", p)
+            print("Ps 4th column ", t)
+
+
+            T = np.divide(np.dot(K_inv, t), S)
+
+            
+
+
+
             #Get Translational
 
 
