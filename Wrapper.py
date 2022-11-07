@@ -22,7 +22,7 @@ from NonlinearTriangulation import NonlinearTriangulation
 
 
 def FindMatchings(filename, id_):
-    with open('./P3Data/matching1.txt') as f:
+    with open(filename) as f:
         lines = f.readlines()
         lengthLines = len(lines)
         matching_1 = {}
@@ -63,8 +63,14 @@ def FindMatchings(filename, id_):
                 matching_1[rgb] = points_data
 
     matchings = {}
+    
     for keys in matching_1:
+        print("MATCHING ")
+        print(keys)
+        print("=======================================")
         if id_ in matchings[keys]:
+            
+
             currentimg = tuple([keys[3], keys[4]])
             matchings[currentimg] = matching_1[keys][imgID]
 
