@@ -43,6 +43,14 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
                             np.hstack((4zero,X, 4zero)), 
                             np.hstack((4zero, 4zero,X))))
 
+            A = np.dot(imgCross, Tilde_X)
+
+            U, S, V = np.linalg.svd(A)
+            V = V[-1]
+            P = V.reshape((3, 4)) #P has 4 but we want the first 3 for rotation and the last one is for translation
+
+
+
 
 
 
