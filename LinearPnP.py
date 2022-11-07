@@ -63,13 +63,20 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
             print("Ps 4th column ", t)
 
 
-            T = np.divide(np.dot(K_inv, t), S)
-
-            
-
-
-
             #Get Translational
+            T = np.divide(np.dot(K_inv, t), S)
+            temp = -np.linalg.inv(R)
+            C = np.dot(temp, T)
+            if np.linalg.det(R) < 0:
+                R = -R
+                C = -C
+
+
+            return R, C
+
+
+
+           
 
 
 
