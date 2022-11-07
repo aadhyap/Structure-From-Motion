@@ -5,30 +5,30 @@ import math
 
 class LinearPnP:
 
-'''
-Getting pose from 2D-3D correspondences
-Inputs:
- X - size (N x 3) matrix of 3D points
- x - size (N x 2) matrix of 2D points whose rows correspond with X
- K - size (3 x 3) camera calibration (intrinsics) matrix
-Outputs:
- C - size (3 x 1) pose transation
- R - size (3 x 3) pose rotation
-'''
+    '''
+    Getting pose from 2D-3D correspondences
+    Inputs:
+     X - size (N x 3) matrix of 3D points
+     x - size (N x 2) matrix of 2D points whose rows correspond with X
+     K - size (3 x 3) camera calibration (intrinsics) matrix
+    Outputs:
+     C - size (3 x 1) pose transation
+     R - size (3 x 3) pose rotation
+    '''
 
 
-'''
-Parameters
-new_matchings --> The matchings for the new image (for example image 2 points to image 3 points)
-worldpointstoImage --> Image 1 and Image 2 --> Image 3
+    '''
+    Parameters
+    new_matchings --> The matchings for the new image (for example image 2 points to image 3 points)
+    worldpointstoImage --> Image 1 and Image 2 --> Image 3
 
 
 
 
-'''
+    '''
     def __init__(self, new_matchings, worldpointstoImage, K):
 
-       newimgpts = self.getNewImg_pts()
+       newimgpts = self.getNewImg_pts(new_matchings, worldpointstoImage)
 
        for pt in newimgpts:
             u, v = pt
@@ -94,7 +94,7 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
 
 
     def getPose(self):
-        return C, R
+        return self.C, self.R
 
 
 
