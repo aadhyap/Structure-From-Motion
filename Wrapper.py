@@ -7,6 +7,7 @@ from EssentialMatrixFromFundamentalMatrix import EssentialMatrixFromFundamentalM
 from ExtractCameraPose import ExtractCameraPose
 from LinearTriangulation import LinearTriangulation
 from DisambiguateCameraPose import DisambiguateCameraPose
+from LinearPnP import LinearPnP
 
 
 from NonlinearTriangulation import NonlinearTriangulation
@@ -107,11 +108,21 @@ print("All World Points ", len(allpts))
 #print(worldpoints)
 
 nonlinear = NonlinearTriangulation(bestCP, allpts, K)
-optimized_worldX, worldpointsToImage= nonlinear.getWorld_pts()
-
+optimized_worldX, imgToX= nonlinear.getWorld_pts()
 
 
 print("optimized world points ", optimized_worldX)
+
+matching_2 = FindMatchings('./P3Data/matching2.txt',"3" )
+
+PnP = LinearPnP(matching_2, imgToX)
+C, R = PnP.getPose()
+
+print("<=======================Final Camera Pose===========================>")
+print(C, R)
+
+
+
 
 #Now we have the the best Camera Pose, and Most Optimized Worldpoints
 #So now we get the camera pose
