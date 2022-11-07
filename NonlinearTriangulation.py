@@ -29,15 +29,23 @@ class NonlinearTriangulation:
         optimized_X = []
         #is it only the world points that made it in this projection
         print("length of world ", len(allworldpts))
+
+        worldpoints_image = {}
         for pts in allworldpts:
             x1 = pts[0]
             x2 = pts[1]
             X = allworldpts[pts]
             
             geometric_error = optimize.least_squares(fun=self.GeometricError, x0=X, method="trf", args=[P1, P2, x1, x2])
-            optimized_X.append(geometric_error.x)
+            newX = geometric_error.x
+            optimized_X.append(newX)
+
+            worldpoints_image[newX] = pts
+
+            
             # x3D_.append(X1[:3])
         self.optimizedWorldpts = np.array(optimized_X)
+        self.worldpoints_image = worldpoints_image;
 
 
 
@@ -69,7 +77,7 @@ class NonlinearTriangulation:
 
 
     def getWorld_pts(self):
-        return self.optimizedWorldpts
+        return self.optimizedWorldpts, self.worldpoints_image
 
 
 
