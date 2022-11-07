@@ -6,9 +6,9 @@ import math
 
 class PnPRANSAC:
 
-    def __init__(self, new_matchings, imgtoX):
+    def __init__(self, new_matchings, imgtoX, K):
 
-        PnP = LinearPnP(matching_2, imgToX, K)
+        
 
         size_matchings = 0
         for pts in worldpointstoImage:
@@ -17,6 +17,13 @@ class PnPRANSAC:
                 size_matchings += 1
 
         self.size_matchings = size_matchings #number of coresspondance in dictionary
+
+        imgpoints = self.choose6(new_matchings, imgToX)
+        PnP = LinearPnP(imgpoints, K)
+        C, R = PnP.getPose()
+
+        print("<=======================Final Camera Pose===========================>")
+        print(C, R)
 
 
 
