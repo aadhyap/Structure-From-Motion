@@ -73,24 +73,6 @@ worldpointstoImage --> Image 1 and Image 2 --> Image 3
 
 
             return R, C
-
-
-
-           
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
 
 
