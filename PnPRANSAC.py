@@ -19,12 +19,40 @@ class PnPRANSAC:
 
         self.size_matchings = size_matchings #number of coresspondance in dictionary
 
+        
+
+    def RANSAC(self, sixpoints):
+
+        n = {}
+        bestres = 0
+        for i in range(30):
+
+
+
+
+
+
+        
         imgpoints = self.choose6(new_matchings, imgtoX)
+
+
+
+
+
+
+
+
+
+
+
+
+
         PnP = LinearPnP(imgpoints, K)
         C, R = PnP.getPose()
 
         print("<=======================Final Camera Pose===========================>")
         print(C, R)
+
 
 
 
