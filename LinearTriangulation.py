@@ -55,10 +55,11 @@ class LinearTriangulation:
             
            
             U, S, V = np.linalg.svd(A)
-            X = V[-1,:4]
+           
             #world_point = X / X[3]
-            world_point = X
+            world_point = V
             world_point = world_point.T
+            world_point = world_point[:,-1]
             world_points[tuple([tuple(x_1), tuple(x_2)])] = world_point #Add image points for image 1 and image 2 and world point into dictionary 
   
 
