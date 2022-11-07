@@ -48,7 +48,7 @@ class DisambiguateCameraPose:
             #worldpts = worldpts[:, 0:3]
 
             allpts = self.numberOfPoints(C_, worldpts, r)
-            print("number of points ", len(allpts))
+
 
             if(len(allpts) > self.maxpts):
 
@@ -56,7 +56,7 @@ class DisambiguateCameraPose:
                 self.maxCamerapose = pose
                 self.allpts = allpts
 
-            print(" MAX number of points ", self.maxpts)
+
 
 
             i = i + 1
