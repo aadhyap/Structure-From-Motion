@@ -58,6 +58,29 @@ class GetInlierRANSAC:
         print("newF")
         self.bestF = newF.getMatrix()
 
+    def GeometricError(self, X, P1, P2, x1, x2):
+
+        P1_1, P1_2, P1_3 = P1
+
+        x = x1[0]
+        y = x1[1]
+
+        X = np.append(X, 1)
+
+        geo_err1 = np.square(np.divide( np.dot(P1_1.reshape(1,-1), X), np.dot(P1_3.reshape(1,-1), X) ) - x) + np.square(np.divide( np.dot(P1_2.reshape(1,-1), X), np.dot(P1_3.reshape(1,-1), X) ) - y) 
+
+
+        P2_1, P2_2, P2_3 = P2
+
+        x = x2[0]
+        y = x2[1]
+
+        geo_err2 = np.square(np.divide(np.dot(P2_1.reshape(1,-1), X), np.dot(P2_3.reshape(1,-1), X) ) - x) + np.square(np.divide( np.dot(P2_2.reshape(1,-1), X),np.dot(P2_3.reshape(1,-1), X) ) - y) 
+
+        error = geo_err1 + geo_err2
+
+        return error.squeeze()
+
 
     def get8points(self):
         
