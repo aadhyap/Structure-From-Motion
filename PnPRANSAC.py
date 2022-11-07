@@ -2,6 +2,7 @@ import numpy as np
 from scipy import linalg
 from random import sample
 from LinearPnP import LinearPnP
+import random
 import math
 
 
@@ -13,21 +14,27 @@ class PnPRANSAC:
 
         allmatchings = {}
 
+        nums = []
         size_matchings = 0
         for pts in imgtoX:
             x2 = pts[1][0:2]     
             if(x2 in new_matchings):
-                size_matchings += 1
+                nums.append(size_matchings)
+                
+
                 new_img = new_matchings[x2]
                 worldpt = imgtoX[pts]
                 allmatchings[tuple(new_img)] = worldpt
+            size_matchings += 1
 
         self.size_matchings = size_matchings #number of coresspondance in dictionary
-        self.RANSAC(allmatchings)
+        self.nums = nums
+        self.RANSAC(allmatchings, new_matchings, imgtoX, K)
+        
 
         
 
-    def RANSAC(self, allimgpts):
+    def RANSAC(self, allimgpts, new_matchings, imgtoX, K):
 
         n = {}
         bestres = 0
@@ -49,12 +56,15 @@ class PnPRANSAC:
                 error = self.GeometricError(P, image, worldpt)
 
                 if(error  < 0.05):
+                    print("error ", error)
+
                     S[keys] = allimgpts[keys]
 
             if (len(S) > len(n)):
+
                 n = S.copy()
 
-
+        print("Best One ", len(n))
         newPnP = LinearPnP(n, K)
         C, R, P= newPnP.getPose()
         print("<=======================Final Camera Pose===========================>")
@@ -70,7 +80,7 @@ class PnPRANSAC:
             u = x[0]
             v = x[1]
 
-            X = np.append(X, 1)
+  
 
 
             error = np.square((u - np.divide(np.dot(P1.T, X), np.dot(P3.T, X)))) + np.square((v - np.divide(np.dot(P2.T, X), np.dot(P3.T, X)))) 
@@ -87,9 +97,9 @@ class PnPRANSAC:
 
         size_matchings = 0
         count = 0
-        randomNum = []
+        randomNum = self.nums
 
-        rangenums =  sample(range(0, self.size_matchings), 6) 
+        rangenums =  random.sample(randomNum, 6) 
         print("length of list ", len(rangenums))
 
 
