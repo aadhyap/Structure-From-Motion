@@ -132,6 +132,9 @@ _, matching_2 = FindMatchings('./P3Data/matching2.txt',"3" )
 
 pnp_ransac = PnPRANSAC(matching_2, imgToX, K)
 
+C, R, P = pnp_ransac.getbestCP()
+bestpts = pnp_ransac.getpts()
+
 
 
 
