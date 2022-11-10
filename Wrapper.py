@@ -136,6 +136,13 @@ pnp_ransac = PnPRANSAC(matching_2, imgToX, K)
 C, R, P = pnp_ransac.getbestCP()
 bestpts = pnp_ransac.getpts()
 
+NonlinearPnP pnp_non = NonlinearPnP(bestpts, C, R, P, K)
+
+C, R = pnp_non.getPose()
+
+print("NON LINEAR PNP NEW CAMERA RESULTS")
+print(C, R)
+
 
 
 
