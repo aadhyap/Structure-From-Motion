@@ -64,11 +64,23 @@ class PnPRANSAC:
 
                 n = S.copy()
 
+        self.bestpts = n
         print("Best One ", len(n))
         newPnP = LinearPnP(n, K)
         C, R, P= newPnP.getPose()
+        self.C = C
+        self.R = R 
+        self.P = P
         print("<=======================Final Camera Pose===========================>")
         print(C, R)
+
+
+    def getPose(self):
+        return self.C, self.R, self.P
+
+    def getpts(self):
+        return self.bestpts
+
 
 
     def GeometricError(self, P, x, X):
