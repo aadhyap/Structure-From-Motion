@@ -17,7 +17,7 @@ class NonlinearPnP:
         x0=Quart,
         x1 = C,
         method="trf",
-        args=[pts, K, Q, C])
+        args=[pts, K])
 
         Q, C = optimized_params.x
         R = Rotation.from_quat(Q)
@@ -29,10 +29,7 @@ class NonlinearPnP:
         return self.C,self.R
         
 
-
-
-
-    def getLoss(self, M, pts,  K, Q, C):
+    def getLoss(self, Quart, C2, pts,  K):
         C = C.reshape(-1,1)
         R = Rotation.from_quat(Q)
         R = R.as_matrix()
