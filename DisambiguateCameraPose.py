@@ -32,7 +32,7 @@ class DisambiguateCameraPose:
             C = np.reshape(C_, (3, 1))
         
             #C = C.reshape(-1,1) 
-            print("C ", C)
+
             R = np.array(pose[1])
             r = R[2, :].reshape(1,-1)
        

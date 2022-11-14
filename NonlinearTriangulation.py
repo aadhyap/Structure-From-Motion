@@ -40,9 +40,8 @@ class NonlinearTriangulation:
             newX = geometric_error.x
             newX = np.append(newX, 1)
 
-            worldpoints_image[tuple(newX)] = pts
-
-            print("NNNEEEW X ", newX)
+            worldpoints_image[tuple(pts)] = newX
+            optimized_X.append(newX)
 
             
             # x3D_.append(X1[:3])

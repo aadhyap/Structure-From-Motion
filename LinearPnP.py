@@ -26,9 +26,9 @@ class LinearPnP:
 
 
     '''
-    def __init__(self, new_matchings, worldpointstoImage, K):
+    def __init__(self, newimgpts, K):
 
-       newimgpts = self.getNewImg_pts(new_matchings, worldpointstoImage)
+       #newimgpts = self.getNewImg_pts(new_matchings, worldpointstoImage)
 
        a_none= True
        for pt in newimgpts:
@@ -78,12 +78,13 @@ class LinearPnP:
             R = -R
             C = -C
 
+       self.P = P
        self.R = R
        self.C = C
 
     
 
-
+    '''
     def getNewImg_pts(self,new_matchings, worldpointstoImage):
 
 
@@ -97,11 +98,11 @@ class LinearPnP:
                 newimgpts[tuple(new_img)] = worldpt
 
         #returns newimgpts with correct new image points correspondace with world points
-        return newimgpts
+        return newimgpts'''
 
 
     def getPose(self):
-        return self.C, self.R
+        return self.C, self.R, self.P
 
 
 

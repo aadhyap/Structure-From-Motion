@@ -15,7 +15,7 @@ class GetInlierRANSAC:
         self.RANSAC(eight_points_data)
 
     def RANSAC(self, eightpointdata):
-        print("eightpoints generated ", eightpointdata)
+
         n = {}
         bestres = 0
         for i in range(30):
@@ -55,7 +55,6 @@ class GetInlierRANSAC:
 
         #recalculate F = 
         newF = EstimateFundamentalMatrix(n)
-        print("newF")
         self.bestF = newF.getMatrix()
 
     def GeometricError(self, X, P1, P2, x1, x2):
@@ -100,25 +99,22 @@ class GetInlierRANSAC:
                 currentimg = tuple([keys[3], keys[4]])
                 imgpoints[currentimg] = matchings[keys][imgID]
             size_matchings += 1
-        print("NUMBER OF SIZE MATCHINGS ", randomNum)
+      
 
                 
 
         rangenums =  random.sample(randomNum, 8)
-        print("FIRST RANGE NUMS ", len(rangenums)) 
+
         for nums in rangenums:
             count = 0
             for keys in matchings:
                 if imgID in matchings[keys]:
-                    print("nums ", nums)
-                    print("count ", count)
                     if(count == nums):
                         currentimg = tuple([keys[3], keys[4]])
                         eight_points_data[currentimg] = matchings[keys][imgID]
                     if(count > nums):
                         break
                 count += 1
-        print("ALL EIGHT POINTS ", eight_points_data)
 
 
 

@@ -7,6 +7,7 @@ class EstimateFundamentalMatrix:
     def __init__(self, points):
 
         print("len of of eight points ", len(points))
+        print(points)
         # build matrix for equations
 
        

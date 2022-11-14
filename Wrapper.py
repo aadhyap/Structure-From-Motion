@@ -24,6 +24,13 @@ from NonlinearPnP import NonlinearPnP
 
 
 
+'''
+Params: takes in filename of the matching.txt file and the id of the pair it is trying to match to
+#returns one list with the rgb values as key and a second with teh coordinates of the matching text 
+file as key and the matches as value
+
+'''
+
 def FindMatchings(filename, id_):
     with open(filename) as f:
         lines = f.readlines()
@@ -72,76 +79,114 @@ def FindMatchings(filename, id_):
 
             currentimg = tuple([keys[3], keys[4]])
             matchings[currentimg] = matching_1[keys][id_]
-
-    
-
-    print("MMMMAAAAAATTTTCCHHHHINNNNGGGSSSSS")
-    print(matchings)
-    print("============================================================")
-
     return matching_1, matchings
 
-matching_1, matchings= FindMatchings('./P3Data/matching1.txt',"2" )
 
 
 
 
 
 
-#Now choose 8 correspondances
-#img1 needs 8 and its corresponding image, (lets say 2)
+def TwoViews():
+    matching_1, matchings= FindMatchings('./P3Data/matching1.txt',"2" )
+
+
+    #Now choose 8 correspondances
+    #img1 needs 8 and its corresponding image, (lets say 2)
+    #FundamentalMatrix = EstimateFundamentalMatrix(matching_1)
+    F = GetInlierRANSAC(matching_1, "2")
+    #print("Final F ", F.getF())
+    Essential = EssentialMatrixFromFundamentalMatrix(F.getF())
+    K = Essential.getK() # instrinsic parameters
+    #print("Essential Matrix ", Essential.getEssential())
+
+    #Get camera poses
+    CameraPoses = ExtractCameraPose(Essential.getEssential()).getCameraPoses()
+    #print("Camera Poses ", CameraPoses)
+
+
+    allworldpts = []
+    for i in range(len(CameraPoses)):
+        print("new Camera pose", CameraPoses[i])
+        w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
+        worldpoints = w.getWorldPoints()
+
+        allworldpts.append(worldpoints)
+
+
+    removeCameraPose = DisambiguateCameraPose(K, CameraPoses, allworldpts)
+    bestCP, allpts = removeCameraPose.getbestCP()
+
+    #print("best CP ", bestCP)
+    #print("All World Points ", len(allpts))
+    #print(worldpoints)
+
+    nonlinear = NonlinearTriangulation(bestCP, allpts, K)
+    optimized_worldX, imgToX= nonlinear.getWorld_pts()
+
+
+    print("optimized world points ", optimized_worldX)
+    return bestCP, imgToX, K
 
 
 
-#FundamentalMatrix = EstimateFundamentalMatrix(matching_1)
-F = GetInlierRANSAC(matching_1, "2")
-print("Final F ", F.getF())
-Essential = EssentialMatrixFromFundamentalMatrix(F.getF())
-K = Essential.getK() # instrinsic parameters
-print("Essential Matrix ", Essential.getEssential())
+def get_N_images():
+    
 
-#Get camera poses
-CameraPoses = ExtractCameraPose(Essential.getEssential()).getCameraPoses()
-print("Camera Poses ", CameraPoses)
+    CP, imgToX, K = TwoViews()
+
+    print("===================================")
+    print("starting to get n images")
 
 
-allworldpts = []
-for i in range(len(CameraPoses)):
-    print("new Camera pose", CameraPoses[i])
-    w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
-    worldpoints = w.getWorldPoints()
+    for i in range(3):
 
-    allworldpts.append(worldpoints)
+        print("Image " + str(i) + " ~~~~~~~~~~~~~~~~~~")
 
 
-removeCameraPose = DisambiguateCameraPose(K, CameraPoses, allworldpts)
-bestCP, allpts = removeCameraPose.getbestCP()
+        iD = str(3 + i)
 
-print("best CP ", bestCP)
-print("All World Points ", len(allpts))
-#print(worldpoints)
+        print("image ID ", iD)
+        matchings1, matching_2 = FindMatchings('./P3Data/matching2.txt',iD )
+        pnp_ransac = PnPRANSAC(matching_2, imgToX, K)
+        C, R, P = pnp_ransac.getPose()
+        bestpts = pnp_ransac.getpts()
+        pnp_non = NonlinearPnP(bestpts, C, R, P, K)
+        C, R = pnp_non.getPose()
 
-nonlinear = NonlinearTriangulation(bestCP, allpts, K)
-optimized_worldX, imgToX= nonlinear.getWorld_pts()
+        print("NON LINEAR PNP NEW CAMERA RESULTS")
+        print(C, R)
+
+        w= LinearTriangulation(K, CP, matchings1, iD)
+        worldpts = w.getWorldPoints()
+
+        allpts = {}
+
+        for pt in worldpts:
 
 
-print("optimized world points ", optimized_worldX)
+            world_pt = worldpts[pt]
 
-_, matching_2 = FindMatchings('./P3Data/matching2.txt',"3" )
+            world_pt = world_pt / world_pt[3].reshape(-1,1)
+            world_pt = world_pt[0][0:3]
+
+        
+            allpts[pt] = world_pt
+
+  
+        nonlinear = NonlinearTriangulation(CP, allpts, K)
+        optimized_worldX, imgToWorld = nonlinear.getWorld_pts()
+
+        print("non Linear Triangulation all world points of image ", iD, " ", optimized_worldX)
 
 
 
-pnp_ransac = PnPRANSAC(matching_2, imgToX, K)
+get_N_images()
 
-C, R, P = pnp_ransac.getbestCP()
-bestpts = pnp_ransac.getpts()
 
-NonlinearPnP pnp_non = NonlinearPnP(bestpts, C, R, P, K)
+       
 
-C, R = pnp_non.getPose()
 
-print("NON LINEAR PNP NEW CAMERA RESULTS")
-print(C, R)
 
 
 

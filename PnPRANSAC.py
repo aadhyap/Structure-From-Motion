@@ -56,7 +56,6 @@ class PnPRANSAC:
                 error = self.GeometricError(P, image, worldpt)
 
                 if(error  < 0.05):
-                    print("error ", error)
 
                     S[keys] = allimgpts[keys]
 
@@ -65,7 +64,6 @@ class PnPRANSAC:
                 n = S.copy()
 
         self.bestpts = n
-        print("Best One ", len(n))
         newPnP = LinearPnP(n, K)
         C, R, P= newPnP.getPose()
         self.C = C
@@ -84,8 +82,6 @@ class PnPRANSAC:
 
 
     def GeometricError(self, P, x, X):
-
-            print("CURRENT X ", X)
 
             P1, P2, P3 = P
 
@@ -112,7 +108,6 @@ class PnPRANSAC:
         randomNum = self.nums
 
         rangenums =  random.sample(randomNum, 6) 
-        print("length of list ", len(rangenums))
 
 
         for num in rangenums:
@@ -129,7 +124,6 @@ class PnPRANSAC:
                 
                 count +=  1
 
-        print("length of new img points ", newimgpts)
 
         #returns newimgpts with correct new image points correspondace with world points
         return newimgpts

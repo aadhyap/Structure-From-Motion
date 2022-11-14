@@ -19,7 +19,6 @@ class EssentialMatrixFromFundamentalMatrix:
                 data = data.split()
                 self.K.append(data)
             self.K = np.array(self.K).astype(float)
-            print("K in an array ", self.K)
         self.getEssential()
 
     
