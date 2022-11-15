@@ -111,12 +111,19 @@ def TwoViews():
 
 
     allworldpts = []
+    Cset = []
     for i in range(len(CameraPoses)):
         print("new Camera pose", CameraPoses[i])
         w= LinearTriangulation(K, CameraPoses[i], matching_1, "2")
         worldpoints = w.getWorldPoints()
 
+
+
         allworldpts.append(worldpoints)
+        
+
+
+
 
 
     removeCameraPose = DisambiguateCameraPose(K, CameraPoses, allworldpts)
@@ -126,11 +133,59 @@ def TwoViews():
     #print("All World Points ", len(allpts))
     #print(worldpoints)
 
+
+    x = []
+    y =[]
+    z = []
+    for key in allpts:
+        x.append(allpts[key][0])
+        y.append(allpts[key][1])
+        z.append(allpts[key][2])
+   
+
+    Cset.append(bestCP)
+    fig = plt.figure(figsize = (10, 10))
+    plt.xlim(-10,  10)
+    plt.ylim(-20,  20)
+    plt.scatter(x, z, marker='.',linewidths=0.5, color = 'blue')
+    for i in range(0, len(Cset)):
+        euler = Rotation.from_matrix(Cset[i][1])
+        R1 =  euler.as_rotvec()
+        R1 = np.rad2deg(R1)
+        plt.plot(Cset[i][0][0],Cset[i][0][2], marker=(3, 0, int(R1[1])), markersize=10, linestyle='None')
+        
+    plt.savefig('LinearTriangulation.png')
+    plt.show()
+
     nonlinear = NonlinearTriangulation(bestCP, allpts, K)
     optimized_worldX, imgToX= nonlinear.getWorld_pts()
 
 
     print("optimized world points ", optimized_worldX)
+    Cset = []
+    Cset.append(bestCP)
+
+
+    X = optimized_worldX
+    x = X[:,0]
+    y = X[:,1]
+    z = X[:,2]
+
+    print(len(x))
+    
+    # 2D plotting
+    fig = plt.figure(figsize = (10, 10))
+    plt.xlim(-10,  10)
+    plt.ylim(-20,  20)
+    plt.scatter(x, z, marker='.',linewidths=0.5, color = 'blue')
+    for i in range(0, len(Cset)):
+        euler = Rotation.from_matrix(Cset[i][1])
+        R1 =  euler.as_rotvec()
+        R1 = np.rad2deg(R1)
+        plt.plot(Cset[i][0][0],Cset[i][0][2], marker=(3, 0, int(R1[1])), markersize=10, linestyle='None')
+        
+    plt.savefig('NonTriangulation.png')
+    plt.show()
     return bestCP, imgToX, K, optimized_worldX
 
 
@@ -202,6 +257,7 @@ def get_N_images():
         
         all_worldpts = np.append(all_worldpts, optimized_world, axis = 0)
 
+    
         n = 9 * n_cameras + 3 * n_points
         m = 2 * points_2d.shape[0]
 
@@ -220,7 +276,7 @@ def get_N_images():
 
 
 
-    print("ALL World Points")
+
     print(all_worldpts)
 
     X = all_worldpts
@@ -232,14 +288,14 @@ def get_N_images():
     
     # 2D plotting
     fig = plt.figure(figsize = (10, 10))
-    plt.xlim(-20,  20)
-    plt.ylim(-10,  20)
-    plt.scatter(x, z, marker='.',linewidths=0.5, color = 'green')
+    plt.xlim(-250,  250)
+    plt.ylim(-100,  100)
+    plt.scatter(x, z, marker='.',linewidths=0.5, color = 'blue')
     for i in range(0, len(Cset)):
         euler = Rotation.from_matrix(Cset[i][1])
         R1 =  euler.as_rotvec()
         R1 = np.rad2deg(R1)
-        plt.plot(Cset[i][0][0],Cset[i][0][2], marker=(3, 0, int(R1[1])), markersize=3, linestyle='None')
+        plt.plot(Cset[i][0][0],Cset[i][0][2], marker=(3, 0, int(R1[1])), markersize=10, linestyle='None')
         
     plt.savefig('2D.png')
     plt.show()
