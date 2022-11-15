@@ -12,8 +12,9 @@ class BuildVisibilityMatrix:
     and its own matches and feature matches of previous img
     '''
     def __init__(self, featureMatches, matches, imgtoWorldpts):
+        j = 0
 
-        vis_mat = []
+       ''' vis_mat = []
 
         j = 0
         for ncam in imgtoWorldpts:
@@ -29,6 +30,38 @@ class BuildVisibilityMatrix:
                 x = j #2D image
 
                 #find the 2D image coords in the matches list
+
+
+
+
+    def findMatch(featureMatches, matches, 2Dcoords, iD):
+        for key in featureMatches:
+            if iD in featureMatches[key]:
+                if featureMatches[key][iD] == 2Dcoords:'''
+
+                    #This feature is present 
+                    #Found a feature match woohoo, so this specific point is visible
+
+
+    #https://scipy-cookbook.readthedocs.io/items/bundle_adjustment.html
+    def bundle_adjustment_sparsity(n_cameras, n_points, camera_indices, point_indices):
+        n_points = n_points.shape[0]
+        m = camera_indices.size * 2
+        n = n_cameras * 9 + n_points * 3
+        A = lil_matrix((m, n), dtype=int)
+
+        i = np.arange(camera_indices.size)
+        for s in range(9):
+            A[2 * i, camera_indices * 9 + s] = 1
+            A[2 * i + 1, camera_indices * 9 + s] = 1
+
+        for s in range(3):
+            A[2 * i, n_cameras * 9 + point_indices * 3 + s] = 1
+            A[2 * i + 1, n_cameras * 9 + point_indices * 3 + s] = 1
+
+        return A
+
+
 
 
 

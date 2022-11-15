@@ -1,6 +1,9 @@
 #choose 8 correspondances between two images (1 and another image)
 import numpy as np
 import cv2 as cv2
+from matplotlib import pyplot as plt
+from mpl_toolkits import mplot3d
+from scipy.spatial.transform import Rotation 
 from EstimateFundamentalMatrix import EstimateFundamentalMatrix
 from GetInlierRANSAC import GetInlierRANSAC
 from EssentialMatrixFromFundamentalMatrix import EssentialMatrixFromFundamentalMatrix
@@ -11,6 +14,8 @@ from DisambiguateCameraPose import DisambiguateCameraPose
 from LinearPnP import LinearPnP
 from PnPRANSAC import PnPRANSAC
 from NonlinearPnP import NonlinearPnP
+from BuildVisibilityMatrix import BuildVisibilityMatrix
+from BundleAdjustment import BundleAdjustment
 
 
 
@@ -126,19 +131,24 @@ def TwoViews():
 
 
     print("optimized world points ", optimized_worldX)
-    return bestCP, imgToX, K
+    return bestCP, imgToX, K, optimized_worldX
 
 
 
 def get_N_images():
+
+    filenames = ['./P3Data/matching2.txt', './P3Data/matching2.txt', './P3Data/matching2.txt', './P3Data/matching5.txt']
     
 
-    CP, imgToX, K = TwoViews()
+    CP, imgToX, K, optimized_worldX = TwoViews()
+    Cset = [CP]
 
     print("===================================")
     print("starting to get n images")
 
 
+    all_worldpts = optimized_worldX
+    n_cameras = []
     for i in range(3):
 
         print("Image " + str(i) + " ~~~~~~~~~~~~~~~~~~")
@@ -147,12 +157,15 @@ def get_N_images():
         iD = str(3 + i)
 
         print("image ID ", iD)
-        matchings1, matching_2 = FindMatchings('./P3Data/matching2.txt',iD )
+        print("i ", i)
+        matchings1, matching_2 = FindMatchings(filenames[i],iD )
         pnp_ransac = PnPRANSAC(matching_2, imgToX, K)
         C, R, P = pnp_ransac.getPose()
         bestpts = pnp_ransac.getpts()
         pnp_non = NonlinearPnP(bestpts, C, R, P, K)
         C, R = pnp_non.getPose()
+        Cset.append([C,R])
+        n_cameras.append([C,R])
 
         print("NON LINEAR PNP NEW CAMERA RESULTS")
         print(C, R)
@@ -162,7 +175,13 @@ def get_N_images():
 
         allpts = {}
 
+        camera_indices = []
+        i = 0
         for pt in worldpts:
+
+    
+            i = i+ 1
+
 
 
             world_pt = worldpts[pt]
@@ -175,9 +194,60 @@ def get_N_images():
 
   
         nonlinear = NonlinearTriangulation(CP, allpts, K)
-        optimized_worldX, imgToWorld = nonlinear.getWorld_pts()
+        optimized_world, imgToWorld = nonlinear.getWorld_pts()
 
-        print("non Linear Triangulation all world points of image ", iD, " ", optimized_worldX)
+        print("non Linear Triangulation all world points of image ", iD, " ", optimized_world)
+
+
+        
+        all_worldpts = np.append(all_worldpts, optimized_world, axis = 0)
+
+        n = 9 * n_cameras + 3 * n_points
+        m = 2 * points_2d.shape[0]
+
+
+        BuildVisibilityMatrix vis = BuildVisibilityMatrix(matchings1, matching_2, imgToWorld)
+        vis.bundle_adjustment_sparsity()
+
+        A = vis.bundle_adjustment_sparsity(n_cameras, all_worldpts, camera_indices, point_indices)
+
+        BundleAdjustment bun  = BundleAdjustment(camera_params, points_3d, n_cameras, n_points, camera_indices, point_indices, points_2d)
+        C, R, allworldpts = bun.getPose()
+
+
+
+
+
+
+
+    print("ALL World Points")
+    print(all_worldpts)
+
+    X = all_worldpts
+    x = X[:,0]
+    y = X[:,1]
+    z = X[:,2]
+
+    print(len(x))
+    
+    # 2D plotting
+    fig = plt.figure(figsize = (10, 10))
+    plt.xlim(-20,  20)
+    plt.ylim(-10,  20)
+    plt.scatter(x, z, marker='.',linewidths=0.5, color = 'green')
+    for i in range(0, len(Cset)):
+        euler = Rotation.from_matrix(Cset[i][1])
+        R1 =  euler.as_rotvec()
+        R1 = np.rad2deg(R1)
+        plt.plot(Cset[i][0][0],Cset[i][0][2], marker=(3, 0, int(R1[1])), markersize=3, linestyle='None')
+        
+    plt.savefig('2D.png')
+    plt.show()
+  
+
+
+
+
 
 
 

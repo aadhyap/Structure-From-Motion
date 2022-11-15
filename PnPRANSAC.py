@@ -27,6 +27,8 @@ class PnPRANSAC:
                 allmatchings[tuple(new_img)] = worldpt
             size_matchings += 1
 
+        print("nums ", nums)
+
         self.size_matchings = size_matchings #number of coresspondance in dictionary
         self.nums = nums
         self.RANSAC(allmatchings, new_matchings, imgtoX, K)
@@ -38,7 +40,7 @@ class PnPRANSAC:
 
         n = {}
         bestres = 0
-        for i in range(30):
+        for i in range(15):
             #choose 6 points
             imgpoints = self.choose6(new_matchings, imgtoX)
             PnP = LinearPnP(imgpoints, K)
@@ -123,6 +125,8 @@ class PnPRANSAC:
                     break
                 
                 count +=  1
+
+  
 
 
         #returns newimgpts with correct new image points correspondace with world points

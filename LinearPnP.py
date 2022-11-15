@@ -65,10 +65,6 @@ class LinearPnP:
        t = P[:, 3]
 
 
-       print("All of P ", P)
-       print("Ps three columns ", p)
-       print("Ps 4th column ", t)
-
 
        #Get Translational
        T = np.divide(np.dot(K_inv, t), S)

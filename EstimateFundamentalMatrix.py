@@ -6,8 +6,7 @@ from scipy import linalg
 class EstimateFundamentalMatrix:
     def __init__(self, points):
 
-        print("len of of eight points ", len(points))
-        print(points)
+  
         # build matrix for equations
 
        
@@ -32,8 +31,7 @@ class EstimateFundamentalMatrix:
         F = F/F[2,2]
 
         #why is the last F in the corner 1 
-        print("_____F_____")
-        print(F)
+  
 
    
         self.matrix = F
