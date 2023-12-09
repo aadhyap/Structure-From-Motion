@@ -1,4 +1,4 @@
-# SfM
+# Structure from Motion
 Structure From Motion Takes images that can be found in Phase1/P3Data which are pictures of different angles of a building.
 We know the camera intrinsic and extrinsic parameters and the feature matching points from each image are found using SIFT.
 Please Refer to the Report.pdf to learn more about this project and how we took these points and were able to find camera
