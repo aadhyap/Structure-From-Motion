@@ -5,6 +5,9 @@ Please Refer to the Report.pdf to learn more about this project and how we took 
 poses for each frame. 
 
 
+Check out Report.pdf for more informaion
+
+
 Wrapper.py for SfM 
 
 
